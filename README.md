@@ -16,10 +16,10 @@
 ## Level 2
 ### MenuItem
 메뉴를 객체로 관리
-getter와 toString 메서드로 내용 출력 가능.
+⚙️ getter와 ⚙️ toString 메서드로 내용 출력 가능.
 
 ---
 ## Level 3
 ### Kiosk
-⚙️MenuItem 객체를 본 클래스에서 리스트로 관리
+MenuItem 객체를 본 클래스에서 리스트로 관리
 Main에서 진행되던 사용자 입력을 본 클래스에서 진행.
