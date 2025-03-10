@@ -41,10 +41,10 @@ public class Main {
                     System.out.println(hambugi.get(orderCompleted-1).toString());
                     System.exit(0);
                 }
-            }catch(StringIndexOutOfBoundsException e1) {
-                System.out.println("Invalid");
+            }catch(StringIndexOutOfBoundsException  e1) {
+                System.out.println("잘못 입력하셨습니다. ");
             }catch (IndexOutOfBoundsException e2){
-                System.out.println("Invalid");
+                System.out.println("잘못 입력하셨습니다.");
             }
         }
     }
