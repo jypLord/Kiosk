@@ -3,20 +3,20 @@ import java.util.Optional;
 public class MenuItem {
     private final String name;
     private final double price;
-    private final Optional<String> description ;
+    private final String description ;
 
     public MenuItem(String name, double price , String description){
         this.name = name;
         this.price = price;
-        this.description = Optional.ofNullable(description);
+        this.description = description;
     }
     public MenuItem(String name, double price){
         this.name = name;
         this.price = price;
-        this.description = Optional.empty();
+        this.description = null;
     }
 
-    //햄부기 리스트
+    //햄버거 리스트
     public static final MenuItem ShackBurger = new MenuItem("ShackBurger", 6.9 , "토마토, 양상추, 쉑소스가 토핑된 치즈버거");
     public static final MenuItem SmokeShack = new MenuItem("SmokeShack", 8.9, "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거");
     public static final MenuItem Cheeseburger = new MenuItem("Cheeseburger",6.9, "포테이토 번과 비프패티, 치즈가 토핑된 치즈버거");
@@ -39,11 +39,11 @@ public class MenuItem {
         return this.price;
     }
     public Optional<String> getDescription(){
-        return this.description;
+        return Optional.ofNullable(this.description);
     }
 
     @Override
     public String toString(){
-        return getName() +"|" + "W "+getPrice() + "|" + getDescription().orElse("");
+        return getName() +"|" + "W "+getPrice() + "|" + getDescription();
     }
 }
