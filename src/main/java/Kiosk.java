@@ -1,17 +1,21 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Kiosk {
-    //private inputScan;
+
     private MenuItem justForAddingToJangBaGuNI;
 
     private final List<MenuItem> JangBaGuNi = new ArrayList<>();
-   // boolean JangBaguniIsContains = !JangBaGuNi.isEmpty();
+
 
     Scanner input = new Scanner(System.in);
     Menu menu = new Menu();
 
+    // 메뉴의 선택과 입력을 원활하게 하기 위한 공통 Scanner 객체
+    String selectInput;
+    int inputScan;
 
     public void start() {
         String MenuType = """
@@ -22,18 +26,26 @@ public class Kiosk {
                 0. 종료      | 종료
                 """;
         while(true){
+            // 장바구니가 차 있으면 결제하기가 활성화 ↓↓
+            boolean JangBaguniIsContains = !JangBaGuNi.isEmpty();
+
             try{
-                if(JangBaGuNi.isEmpty()){
-                    System.out.println(MenuType);
-                }else {
-                    System.out.println(MenuType);
-                    payOrExit();
+                System.out.println(MenuType);
+
+                // 장바구니가 차 있으면 결제하기가 활성화
+                if(JangBaguniIsContains){
+                    String messageBox = """
+                [ ORDER MENU ]
+                4. Orders       | 장바구니를 확인 후 주문합니다.
+                5. Cancel       | 진행중인 주문을 취소합니다.
+                """;
+                    System.out.println(messageBox);
                 }
 
-                String selectMenuType = input.nextLine();
+                selectInput = input.nextLine();
 
-                int orderTouched = Integer.parseInt(selectMenuType);
-                switch (orderTouched){
+                inputScan = Integer.parseInt(selectInput);
+                switch (inputScan){
 
                     case 0: {
                         System.out.println("프로그램 종료.");
@@ -51,14 +63,32 @@ public class Kiosk {
                     case 3: {
                             sideOrder();
                     }
+                    case 4: {
+                        if(JangBaguniIsContains) {
+                            pay();
+                        }else {
+                            throw new IllegalArgumentException();
+                        }
+                    } case 5: {
+                        if(JangBaguniIsContains) {
+                            exit();
+                        }else {
+                            throw new IllegalArgumentException();
+                        }
+                    }
+
                 }
             } catch (StringIndexOutOfBoundsException e1) {
                 System.out.println("잘못 입력하셨습니다. ");
             } catch (IndexOutOfBoundsException e2) {
                 System.out.println("잘못 입력하셨습니다.");
+            } catch (OrderCancelException e3) {
+                // 메뉴판의 호출과, 주문 취소를 선택했을 때 while 루프를 초기화 하기 위한 예외
+            } catch (IllegalArgumentException e4) {
+                System.out.println("다시 입력하여 주십시오");
             }
         }
-        
+
 
     }
     public void hambugiOrder(){
@@ -74,13 +104,12 @@ public class Kiosk {
             try {
                 //위 텍스트박스 출력 & 사용자 입력
                 System.out.println(hambugiList);
-                String selectInput = input.nextLine();
-                int inputScan = Integer.parseInt(selectInput);
+                selectInput = input.nextLine();
+                inputScan = Integer.parseInt(selectInput);
 
                 // 0 입력시 메인메뉴로 돌아가기
                 if (inputScan == 0) {
                     System.out.println("뒤로 가기");
-                    break;
                 } else {
                     // 메뉴가 1부터 시작하기 때문에 입력을 1로 받음 -> 그 것과 리스트의 인덱스를 맞추기 위한 -1
                     justForAddingToJangBaGuNI = menu.getHambugi().get(inputScan - 1);
@@ -89,14 +118,14 @@ public class Kiosk {
 
 
                     addToJangBaGuNi(justForAddingToJangBaGuNI);
-                    break;
                 }
+                break;
             } catch (StringIndexOutOfBoundsException e1) {
                 System.out.println("잘못 입력하셨습니다. ");
             } catch (IndexOutOfBoundsException e2) {
                 System.out.println("잘못 입력하셨습니다.");
             }
-        }    
+        }
     }
     public void drinkOrder(){
         String drinkList = """
@@ -110,12 +139,11 @@ public class Kiosk {
         while(true) {
             try {
                 System.out.println(drinkList);
-                String selectInput = input.nextLine();
-                int inputScan = Integer.parseInt(selectInput);
+                selectInput = input.nextLine();
+                inputScan = Integer.parseInt(selectInput);
 
                 if (inputScan == 0) {
                     System.out.println("뒤로 가기");
-                    break;
                 } else {
                     // 메뉴 입력 -> 확인 -> 장바구니 메뉴추가
                     this.justForAddingToJangBaGuNI = menu.getDrinks().get(inputScan - 1);
@@ -123,15 +151,15 @@ public class Kiosk {
 
                     addToJangBaGuNi(this.justForAddingToJangBaGuNI);
 
-                    break;
                 }
+                break;
             } catch (StringIndexOutOfBoundsException e1) {
                 System.out.println("잘못 입력하셨습니다. ");
             } catch (IndexOutOfBoundsException e2) {
                 System.out.println("잘못 입력하셨습니다.");
             }
         }
-        
+
     }
     public void sideOrder() {
         String sideList = """
@@ -143,26 +171,23 @@ public class Kiosk {
         while (true) {
             try {
                 System.out.println(sideList);
-                String selectInput = input.nextLine();
-                int inputScan = Integer.parseInt(selectInput);
+                selectInput = input.nextLine();
+                inputScan = Integer.parseInt(selectInput);
 
                 if (inputScan == 0) {
                     System.out.println("뒤로 가기");
-                    break;
                 } else {
                     this.justForAddingToJangBaGuNI = menu.getSideMenu().get(inputScan - 1);
 
                     System.out.println("선택한 메뉴: " + this.justForAddingToJangBaGuNI.toString());
 
                     addToJangBaGuNi(this.justForAddingToJangBaGuNI);
-                    break;
                 }
+                break;
             } catch (StringIndexOutOfBoundsException e1) {
                 System.out.println("잘못 입력하셨습니다. ");
             } catch (IndexOutOfBoundsException e2) {
                 System.out.println("잘못 입력하셨습니다.");
-            } catch (IllegalArgumentException e3) {
-                System.out.println("다시 입력하여 주십시오");
             }
         }
     }
@@ -173,8 +198,8 @@ public class Kiosk {
                     1. 확인               2. 취소
                     """;
             System.out.println(messageBox);
-            String selectInput = input.nextLine();
-            int inputScan = Integer.parseInt(selectInput);
+            selectInput = input.nextLine();
+            inputScan = Integer.parseInt(selectInput);
 
             if (inputScan == 1) {
                 this.JangBaGuNi.add(menuItem);
@@ -188,69 +213,75 @@ public class Kiosk {
             }
         }
     }
-    public void payOrExit(){
-        String messageBox = """
-                [ ORDER MENU ]
-                4. Orders       | 장바구니를 확인 후 주문합니다.
-                5. Cancel       | 진행중인 주문을 취소합니다.
-                """;
-        System.out.println(messageBox);
-        String selectInput = input.nextLine();
-        int inputScan = Integer.parseInt(selectInput);
-        
-        if(inputScan == 4) {
-            System.out.println("[ Orders ]");
 
-            // 선택한 모든 메뉴 출력
-            for (MenuItem menus : JangBaGuNi) {
-                System.out.println(menus);
+    // Pay,exit 과 그 하위메서드에서만 쓰이는 필드 price
+    private double price;
 
-            }
-            System.out.println("[ Total ]");
+    public void pay() {
+        System.out.println("[ Orders ]");
 
-            double price = 0;
-            // 메뉴 총 가격 출력. 위의 price 에 총 가격 입력
-            for (MenuItem menus : JangBaGuNi) {
+        // 선택한 모든 메뉴 출력
+        JangBaGuNi.forEach(System.out::println);
 
-                price += menus.getPrice();
-                System.out.println("W " + price);
-            }
-            System.out.println("\n + 1. 주문      2. 메뉴판");
+        System.out.println("[ Total ]");
 
-            // 1. 주문 2. 메뉴판의 입력받기. 1일때 결제
-            String finalInput = input.nextLine();
-            int realFinalInput = Integer.parseInt(finalInput);
-            if(realFinalInput == 1){
-                System.out.println("주문이 완료되었습니다. 금액은 W" + price +"입니다.");
-            }else if(realFinalInput == 2){
-                String MenuType = """
-                [ MAIN MENU ]
-                1. Burgers
-                2. Drinks
-                3. Desserts
-                0. 종료      | 종료
-                """;
-                System.out.println(MenuType);
+        // 메뉴 총 가격 출력. 위의 price 에 총 가격 입력
+        price = JangBaGuNi.stream()
+                .mapToDouble(MenuItem::getPrice)
+                .sum();
+        System.out.println("W " + price);
 
-            }else{
-                throw new IllegalArgumentException("결제화면 입력 오류");
-            }
+        System.out.println("\n + 1. 주문      2. 메뉴 ");
+
+        // 1, 2 입력받아 주문할지, 처음 화면(메뉴판)으로 돌아갈지 선택
+        String finalInput = input.nextLine();
+        int realFinalInput = Integer.parseInt(finalInput);
+        if (realFinalInput == 1) {
+            discount();
+            System.out.println("주문이 완료되었습니다. 금액은 W" + price + "입니다.");
+            System.exit(0);
+        } else if (realFinalInput == 2) {
+            throw new OrderCancelException();
+
+        } else {
+            throw new IllegalArgumentException("결제화면 입력 오류");
+        }
+    }
 
         // 5 입력시 장바구니 모두 비우기 -> 주문취소
-        }else if(inputScan == 5){
-            System.out.println("주문이 취소됩니다.");
-            JangBaGuNi.clear();
-            String MenuType = """
-                [ MAIN MENU ]
-                1. Burgers
-                2. Drinks
-                3. Desserts
-                0. 종료      | 종료
-                """;
-            System.out.println(MenuType);
+    public void exit () {
+        System.out.println("취소할 메뉴 이름을 적어주세요");
+        System.out.println("[ Orders ]");
+        // 선택한 모든 메뉴 출력
+        JangBaGuNi.forEach(System.out::println);
 
+        String inputToDelete = input.nextLine();
+
+        //getter 사용하여 입력값과 객체의 Name 필드와의 비교. 맞으면 삭제하기.
+        boolean findMenu = JangBaGuNi.stream()
+                .anyMatch(menu -> menu.getName().equals(inputToDelete));
+        if(findMenu) {
+            JangBaGuNi.removeIf(menu -> menu.getName().equals(inputToDelete));
+
+            System.out.println(inputToDelete + " 가 취소되었습니다.");
         }else{
-            throw new IndexOutOfBoundsException("장바구니 확인화면 오류 ");
+            throw new IllegalArgumentException();
         }
+    }
+
+    public void discount () {
+        String messageBlock = """
+                할인 정보를 입력해주세요.
+                1. 국가유공자 : 10%
+                2. 군인     :  5%
+                3. 학생     :  3%
+                4. 일반     :  0%
+                """;
+        System.out.println(messageBlock);
+        String discountInput = input.nextLine();
+        int discountInput2 = Integer.parseInt(discountInput);
+
+        // 숫자를 입력받아 Enum SocialTypeForDiscount 와 연계 → 할인율 리턴 → 할인된 가격을 필드 price 에 저장
+        price += SocialTypeForDiscount.inputSocialType(discountInput2).getDiscountedPrice(price);
     }
 }
