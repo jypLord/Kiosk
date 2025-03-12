@@ -268,7 +268,6 @@ public class Kiosk {
             throw new IllegalArgumentException();
         }
     }
-
     public void discount () {
         String messageBlock = """
                 할인 정보를 입력해주세요.

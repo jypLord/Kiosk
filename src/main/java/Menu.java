@@ -8,7 +8,6 @@ public class Menu {
     private final List<MenuItem> drink = new ArrayList<>(Arrays.asList(MenuItem.CokaCola, MenuItem.pepsiCola, MenuItem.pepsiColaZeroLime, MenuItem.sprite));
     private final List<MenuItem> sideMenu = new ArrayList<>(Arrays.asList(MenuItem.gamtui, MenuItem.onionRing));
 
-
     public List<MenuItem> getHambugi(){
         return this.hambugi;
     }
