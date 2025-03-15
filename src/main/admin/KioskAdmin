@@ -14,6 +14,7 @@ public class KioskAdmin{
       1. Hamburger
       2. Drinks
       3. Side Menu
+      0. exit
       """);
 
       String inputMenuType = scanner.nextLine();
@@ -41,15 +42,18 @@ public class KioskAdmin{
           sideCreater();
           break;
         }
+        case 0: {
+        System.exit(0);
+        }
         default: {
           throw new IllegalArgumentException();
         }
         
         System.out.printLn("json file load complete!")
       } catch(IllegalArgumentException outOfNumInputError) {
-          System.out.println("Please input in (1, 2, 3)" )
+          System.out.println("Please input in (1, 2, 3, 0)" )
       } catch(NumberFormatException stringInputError){
-          System.out.println("Don't input String. Please input in (1, 2, 3)" )
+          System.out.println("Don't input String. Please input in (1, 2, 3, 0)" )
       }
   }
 }  
