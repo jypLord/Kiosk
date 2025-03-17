@@ -1,6 +1,9 @@
+package user;
+
+import admin.MenuItem;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class Kiosk {
@@ -71,7 +74,7 @@ public class Kiosk {
                         }
                     } case 5: {
                         if(JangBaguniIsContains) {
-                            exit();
+                            delete();
                         }else {
                             throw new IllegalArgumentException();
                         }
@@ -249,7 +252,7 @@ public class Kiosk {
     }
 
         // 5 입력시 장바구니 모두 비우기 -> 주문취소
-    public void exit () {
+    public void delete () {
         System.out.println("취소할 메뉴 이름을 적어주세요");
         System.out.println("[ Orders ]");
         // 선택한 모든 메뉴 출력
@@ -280,7 +283,7 @@ public class Kiosk {
         String discountInput = input.nextLine();
         int discountInput2 = Integer.parseInt(discountInput);
 
-        // 숫자를 입력받아 Enum SocialTypeForDiscount 와 연계 → 할인율 리턴 → 할인된 가격을 필드 price 에 저장
+        // 숫자를 입력받아 Enum user.SocialTypeForDiscount 와 연계 → 할인율 리턴 → 할인된 가격을 필드 price 에 저장
         price += SocialTypeForDiscount.inputSocialType(discountInput2).getDiscountedPrice(price);
     }
 }

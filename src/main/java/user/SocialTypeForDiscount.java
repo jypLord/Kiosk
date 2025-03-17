@@ -1,3 +1,5 @@
+package user;
+
 public enum SocialTypeForDiscount {
     Patriot(10),
     Soldier(5),

@@ -1,20 +1,38 @@
-import java.util.Optional;
+package admin;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MenuItem {
-    private final String name;
-    private final double price;
-    private final String description ;
+    private String name;
+    private double price;
+
+    @JsonProperty("description")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String description;
+
+    public MenuItem(){}
 
     public MenuItem(String name, double price , String description){
         this.name = name;
         this.price = price;
         this.description = description;
+
     }
     public MenuItem(String name, double price){
-        this.name = name;
-        this.price = price;
-        this.description = null;
+        this(name,price,null);
+
     }
+    public String getName(){
+        return this.name;
+    }
+    public double getPrice(){
+        return this.price;
+    }
+    public String getDescription(){
+        return description;
+    }
+
 
     //햄버거 리스트
     public static final MenuItem ShackBurger = new MenuItem("ShackBurger", 6.9 , "토마토, 양상추, 쉑소스가 토핑된 치즈버거");
@@ -31,16 +49,6 @@ public class MenuItem {
     //사이드 메뉴 리스트
     public static final MenuItem gamtui = new MenuItem("potato fries", 2.0);
     public static final MenuItem onionRing = new MenuItem("onion ring", 2.5);
-
-    public String getName(){
-        return this.name;
-    }
-    public double getPrice(){
-        return this.price;
-    }
-    public String getDescription(){
-        return this.description;
-    }
 
     @Override
     public String toString(){
